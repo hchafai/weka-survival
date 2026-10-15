@@ -1,0 +1,8 @@
+/target/
+/output/
+/tmp/
+/validation/cache/
+/validation/data/*.arff
+!/validation/data/weibull-demo.arff
+*.DS_Store
+._*

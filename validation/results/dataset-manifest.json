@@ -1,0 +1,22 @@
+[
+  {
+    "dataset": "php-code-smells",
+    "doi": "10.5281/zenodo.7626150",
+    "license": "CC-BY-4.0",
+    "observations": 67583,
+    "events": 41283,
+    "censored": 26300,
+    "excluded_nonpositive_or_invalid": 52,
+    "archive_sha256": "0207b0869664121c2bf49e98ab4fc950b65749445079ae48bd923f223bfd926c"
+  },
+  {
+    "dataset": "java-code-test-smells",
+    "doi": "10.5281/zenodo.16230542",
+    "license": "CC-BY-4.0",
+    "observations": 41650,
+    "events": 15235,
+    "censored": 26415,
+    "excluded_nonpositive_or_invalid": 1191,
+    "archive_sha256": "a46def35c3e94fde1e650c418363e94944766d257682be6d300c311a194e5ff6"
+  }
+]

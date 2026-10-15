@@ -1,0 +1,14 @@
+@relation weibull_validation_demo
+
+@attribute event numeric
+@attribute duration numeric
+
+@data
+1,1
+1,2
+0,3
+1,4
+0,5
+1,7
+0,9
+1,12

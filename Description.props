@@ -1,0 +1,14 @@
+# Weka package metadata
+PackageName=WeibullSurvival
+Version=0.1.0
+Date=2026-10-15
+Title=Right-censored Weibull survival estimation for Weka
+Category=Regression
+Author=Hicham CHAFAI
+Maintainer=Hicham CHAFAI
+License=file LICENSE
+Description=WeibullSurvival estimates the shape beta and scale eta of a two-parameter Weibull lifetime distribution by maximum likelihood with right-censored observations. The numeric Weka class is duration and a configurable binary attribute identifies observed events. The package reports survival, hazard, cumulative hazard, quantiles, mean, median, standard errors, confidence intervals, log-likelihood, AIC and BIC. It supports instance weights, serialization, Weka Explorer discovery and command-line options. Predictions are the baseline median because version 0.1.0 does not yet model covariates.
+Changes=Initial release with censored maximum-likelihood estimation, tests, package archive, Javadoc and reproducible validation against two public software-smell survival datasets.
+PackageURL=https://github.com/hchafai/weka-survival/releases/download/v0.1.0/WeibullSurvival-0.1.0.zip
+URL=https://github.com/hchafai/weka-survival
+Depends=weka (>=3.8.7)

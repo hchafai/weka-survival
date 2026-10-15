@@ -1,0 +1,14 @@
+@relation weibull_demo
+
+@attribute event {no,yes}
+@attribute duration numeric
+
+@data
+yes,30
+yes,45
+no,60
+yes,75
+no,90
+yes,120
+no,180
+yes,240

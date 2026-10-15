@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.hchafai</groupId>
+    <artifactId>weka-survival</artifactId>
+    <version>0.1.0</version>
+    <name>WeibullSurvival for Weka</name>
+    <description>Two-parameter Weibull survival estimation with right censoring for Weka</description>
+    <url>https://github.com/hchafai/weka-survival</url>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License v3.0 or later</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Hicham CHAFAI</name>
+        </developer>
+    </developers>
+
+    <properties>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <weka.artifactId>weka-stable</weka.artifactId>
+        <weka.version>3.8.7</weka.version>
+        <junit.version>5.13.4</junit.version>
+        <assertj.version>3.27.6</assertj.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>nz.ac.waikato.cms.weka</groupId>
+            <artifactId>${weka.artifactId}</artifactId>
+            <version>${weka.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.googlecode.matrix-toolkits-java</groupId>
+                    <artifactId>mtj</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.sourceforge.f2j</groupId>
+                    <artifactId>arpack_combined_all</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.googlecode.netlib-java</groupId>
+                    <artifactId>netlib-java</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.github.fracpete</groupId>
+                    <artifactId>jfilechooser-bookmarks</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.github.fracpete</groupId>
+                    <artifactId>jclipboardhelper</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.formdev</groupId>
+                    <artifactId>flatlaf</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>WeibullSurvival</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.4</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.11.2</version>
+                <configuration>
+                    <doclint>none</doclint>
+                    <quiet>true</quiet>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>package-javadoc</id>
+                        <phase>verify</phase>
+                        <goals><goal>javadoc</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.6.2</version>
+                <executions>
+                    <execution>
+                        <id>standalone-no-spring</id>
+                        <goals><goal>enforce</goal></goals>
+                        <configuration>
+                            <rules>
+                                <bannedDependencies>
+                                    <excludes><exclude>org.springframework:*</exclude></excludes>
+                                    <message>The Weka extension must remain independent of Spring.</message>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

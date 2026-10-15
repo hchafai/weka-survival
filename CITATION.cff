@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this Weka extension, please cite the software and the source dataset relevant to your analysis."
+title: "WeibullSurvival for Weka"
+type: software
+version: 0.1.0
+date-released: 2026-10-15
+authors:
+  - family-names: CHAFAI
+    given-names: Hicham
+repository-code: "https://github.com/hchafai/weka-survival"
+license: GPL-3.0-or-later
+keywords:
+  - Weka
+  - Weibull distribution
+  - survival analysis
+  - right censoring
+  - software obsolescence
+  - technical debt
