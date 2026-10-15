@@ -5,28 +5,96 @@ two-parameter Weibull lifetime distribution in the presence of right-censored
 observations. Its motivating applications are software obsolescence and
 technical-debt survival, but the estimator is domain independent.
 
-## What the extension estimates
+## Mathematical model
 
-For shape `beta > 0` and scale `eta > 0`:
+Let `T` be a positive lifetime, `beta > 0` the shape parameter and `eta > 0`
+the scale parameter. The two-parameter Weibull model is defined by:
 
 ```text
-S(t) = exp(-(t / eta)^beta)
-h(t) = (beta / eta) (t / eta)^(beta - 1)
+Probability density:       f(t) = (beta / eta) (t / eta)^(beta - 1)
+                                   exp(-(t / eta)^beta)
+Cumulative probability:    F(t) = 1 - exp(-(t / eta)^beta)
+Survival probability:      S(t) = exp(-(t / eta)^beta)
+Cumulative hazard:         H(t) = (t / eta)^beta
+Instantaneous hazard:      h(t) = (beta / eta) (t / eta)^(beta - 1)
 ```
 
-With event indicator `delta_i` (`1` observed, `0` right-censored), the fitted
-log-likelihood is:
+The shape parameter describes how risk changes with age:
+
+- `beta < 1`: decreasing hazard; surviving items become less likely to fail or
+  be removed as they age;
+- `beta = 1`: constant hazard, which reduces Weibull to the exponential law;
+- `beta > 1`: increasing hazard, often interpreted as aging, wear or growing
+  obsolescence pressure.
+
+`eta` is the characteristic lifetime for which `F(eta) = 1 - exp(-1)`, meaning
+approximately 63.2% of events have occurred. Useful summaries are:
 
 ```text
+Median:       t_0.5 = eta (ln 2)^(1 / beta)
+Mean:         E[T]  = eta Gamma(1 + 1 / beta)
+Quantile:     t_p   = eta [-ln(1 - p)]^(1 / beta)
+```
+
+### Right-censored maximum likelihood
+
+For observation `i`, `t_i` is the known duration and `delta_i` equals `1` when
+the event is observed or `0` when the item is still alive at the last
+observation. An observed event contributes the density `f(t_i)`; a censored
+record contributes only the probability of surviving at least until `t_i`,
+namely `S(t_i)`. Therefore:
+
+```text
+L(beta, eta) = product_i f(t_i)^delta_i S(t_i)^(1 - delta_i)
+
 log L = sum_i delta_i [log(beta) - beta log(eta)
                        + (beta - 1) log(t_i)]
         - sum_i (t_i / eta)^beta
 ```
 
-The implementation profiles `eta` analytically and solves the one-dimensional
-score equation for `beta` by bracketed bisection with log-sum-exp arithmetic.
-It reports `beta`, `eta`, log-likelihood, AIC, BIC, survival/hazard functions,
-quantiles, mean, median, observed-information standard errors and 95% CIs.
+For fixed `beta`, the scale has the analytical profile estimate below, where
+`w_i` is the Weka instance weight:
+
+```text
+eta(beta) = [sum_i w_i t_i^beta / sum_i w_i delta_i]^(1 / beta)
+```
+
+The implementation substitutes this expression into the likelihood and solves
+the resulting one-dimensional score equation for `beta` by bracketed bisection
+with log-sum-exp arithmetic. It reports `beta`, `eta`, log-likelihood, AIC, BIC,
+survival and hazard functions, quantiles, mean, median, observed-information
+standard errors and 95% confidence intervals.
+
+## Intended use cases
+
+### Software obsolescence and replacement
+
+- `duration`: time from deployment or a selected baseline until replacement;
+- `event = 1`: the software was retired, replaced or migrated;
+- `event = 0`: the software was still operating when observation ended.
+
+The fitted survival curve estimates the fraction of solutions expected to
+remain in service beyond a horizon. Hazard evolution helps determine whether
+replacement pressure decreases, stays constant or increases with age. These
+results can support replacement planning, but cost, security and business
+criticality must still be modeled separately.
+
+### Technical debt and software smells
+
+- `duration`: lifetime of a debt item, code smell or test smell;
+- `event = 1`: the item was repaid, refactored or removed;
+- `event = 0`: it was still present at the final analyzed revision.
+
+Here, `S(t)` estimates persistence beyond time `t`, while `h(t)` describes the
+instantaneous removal rate among items that have survived until `t`. Comparing
+projects or smell types requires separate fits, stratification, or a future
+Weibull regression model rather than interpreting one pooled curve causally.
+
+### Reliability and maintenance
+
+The same data contract applies to component failures, incident resolution,
+service retirement and maintenance intervals whenever durations are positive,
+events are binary and incomplete follow-up produces right censoring.
 
 ## Weka data contract
 
